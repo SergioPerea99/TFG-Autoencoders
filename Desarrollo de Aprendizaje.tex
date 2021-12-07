@@ -43,7 +43,7 @@ Se recogerá una visión amplia de los AEs, su uso para la fusión de caracterí
     
     \begin{itemize}
         \item \textbf{Estructura general.}
-            \par A partir de una entrada \textit{x}, se codifica y decodifica dicha entrada para obtener una reconstrucción \textit{r} (ambas deben tener la misma dimensionalidad). Sin embargo, \textit{y} puede tener diferente dimensionalidad.
+            \par A partir de una entrada \textit{x}, se codifica y decodifica dicha entrada para obtener una reconstrucción \textit{r} (ambas deben tener la misma dimensionalidad). Sin embargo, \textit{y} (capa central) puede tener diferente dimensionalidad.
             
             En la figura ~\ref{AE_3capasE_3capasS}, tenemos un ejemplo de AE con una codificación de 3 capas y otras 3 capas de decodificación (capa central inclusive para ambos procesos).
             
@@ -53,7 +53,7 @@ Se recogerá una visión amplia de los AEs, su uso para la fusión de caracterí
             \end{center}
 
         \item \textbf{Funciones de activación de uso común en los autocodificadores.}
-            \par Una unidad (nodo) situada en cualquiera de las capas ocultas del RNA obtiene una serie de valores entrantes de la capa anterior y calcula la suma ponderada de estas entradas, obteniendo la elección de la función a usar; es decir, la \textit{\textbf{función de activación}}. A este comportamiento se le considera en las RNA, normalmente, como no lineal.
+            \par Una unidad (nodo) situada en cualquiera de las capas ocultas de la RNA obtiene una serie de valores entrantes de la capa anterior y calcula la suma ponderada de estas entradas, obteniendo la elección de la función a usar; es decir, la \textit{\textbf{función de activación}}. A este \textbf{comportamiento} se le considera en las RNA, normalmente, como \textbf{no lineal}.
             Las funciones de activación más comunes y simples son: lineal, binaria, ReLU, logística, tangente y SELU. 
             
             \smallskip
@@ -134,7 +134,7 @@ Se recogerá una visión amplia de los AEs, su uso para la fusión de caracterí
             para la función de pérdida.
             \newpage
         
-            \item \textit{\textbf{Entrenamiento}}. Los algoritmos más usados son los basados en la técnica del descenso de gradiente (SGD, o variante de ello). En cada paso, el gradiente de la función objetivo con respecto a los parámetros muestra la dirección de mayor pendiente, y permite al algoritmo modificar los parámetros para buscar un mínimo de la función. Para el cálculo de los gradientes es necesario el \textbf{algoritmo de retropropagación}.
+            \item \textit{\textbf{Entrenamiento}}. Los algoritmos más usados son los basados en la técnica del descenso de gradiente (\hyperlink{https://optimization.cbe.cornell.edu/index.php?title=Stochastic_gradient_descent}{SGD}, o variante de ello). En cada paso, el gradiente de la función objetivo con respecto a los parámetros muestra la dirección de mayor pendiente, y permite al algoritmo modificar los parámetros para buscar un mínimo de la función. Para el cálculo de los gradientes es necesario el \textbf{algoritmo de retropropagación}.
             
             Los AEs son susceptibles al \textbf{sobreajuste}, por lo que se puede aplicar regularización a la función objetivo consiguiendo mayor generalización tras fomentar pesos más pequeños que producen buenas reconstrucciones. De esta forma, los pesos \color{blue}señalados \color{black}  abarcan todos los pesos de W y el $\lambda$ \color{red}señalado \color{black} es un parámetro que determina la magnitud del decaimiento.
             
@@ -161,7 +161,7 @@ Se recogerá una visión amplia de los AEs, su uso para la fusión de caracterí
             
             
             \begin{enumerate}
-                \item \textit{\textbf{Autoencoders dispersos}}. La escasez en una representación indica que los valores, en su mayoría, dan cero o cercanos a cero. Esto da motivo de uso a las transformacones de muestras en códigos dispersos (sobrecompleto y significativo) en el aprendizaje automático. 
+                \item \textit{\textbf{Autoencoders dispersos}}. La escasez en una representación indica que los valores, en su mayoría, dan cero o cercanos a cero. Esto da motivo de uso a las transformaciones de muestras en códigos dispersos (sobrecompleto y significativo) en el aprendizaje automático. 
                 
                 En los AEs básicos, los códigos sobrecompletos serían entrenados para copiar sólamente la entradas en las salidas.
                 
@@ -243,7 +243,7 @@ Se recogerá una visión amplia de los AEs, su uso para la fusión de caracterí
             \begin{center}
                 $\mathcal{L}_{VAE}(\theta,\phi;x) = KL(q_{\phi}(y|x)||p_{\theta}(y)) - \mathcal{E}_{q_{\phi}(y|x)}[\log p_{\theta}(x|y)]$,
             \end{center}
-            donde $q$ es la distribución que aproxima la verdadera distribución latente de y, y $\theta$, $\phi$ son los parámetros de cada distribución.
+            donde $q$ es la distribución que aproxima la verdadera distribución latente de $y$, y $\theta$, $\phi$ son los parámetros de cada distribución.
             
             \item Autoencoder adversial. Modela la codificación imponiendo una distribución a priori, entrenando después un AE estándar y simultáneamente, una red discriminativa que intenta distinguir codificaciones a partir de muestras de la previa impuesta. Dado que el codificador se entrena para engañar al discriminador, las codificaciones tenderán a seguir la distribución impuesta.
         \end{itemize}
@@ -274,8 +274,177 @@ Se recogerá una visión amplia de los AEs, su uso para la fusión de caracterí
 
     \end{enumerate}
     
+    \newpage\item \textit{\textbf{Comparación con otras técnicas de fusión de características}}.
+    \par
+    Los AEs son un tipo de técnica más dentro de las técnicas de fusión, las cuáles se clasifican por supervidados (uso de las distancias con información de la clase, como los autoencoders adversial) y \textbf{no supervisados} (nos centraremos en estos). 
+    Diferenciamos entre \textbf{convexo} (optimiza funciones \textbf{sin ótpimos locales}) y \textbf{no convexa} (hay \textbf{óptimos locales}). Los \textbf{AEs} son \textbf{no convexos}. También diferenciamos entre enfoques lineales y no lineales.
+    
+    \begin{enumerate}
+        \item \textbf{\textit{Enfoques lineales}}.
+        \par
+        Se busca el subconjunto de componentes de \textbf{mayor varianza ortogonal} entre ellas de forma que la combinación lineal se aplique a las variables iniciales.
+        
+        Los AEs pueden tratarse como un nivel general superior al PCA, diferenciados por el aprendizaje de combinaciones no lineales y representaciones incompletas de los datos.
+        \vspace{5mm}
+        \begin{center}
+            \includegraphics[width = .8\textwidth]{imagenes/AE_enfoques_lineal_PCA.png}
+        \end{center}
+        \vspace{5mm}
+        También tenemos el enfoque del \textbf{Análisis Factorial} (AF) que es diferenciado con PCA al igual que el AE básico y el varacional; es decir, los AF y AEs variacionales intentan encontrar el modelo que mejor describa las \textbf{variables subyacentes que causan los datos} mientras que los PCA y AEs básicos simplemente se basan en \textbf{la representación a baja dimensionalidad}.
+        
+        \newpage
+        \item\textbf{\textbf{Enfoques no lineales}}.
+        \par
+        \textit{Kernel PCA} es una extensión de PCA que calcula combinaciones no lineales de variables y representaciones completas. Pero, \textbf{depende del kernel} el éxito y tiene un \textbf{comportamiento diferente} para cada problema.
+        
+        \vspace{5mm}
+        El \textit{Escalamiento multidimensional} (MDS), basado en encontrar coordenadas en un espacio de menor dimensión, manteniendo las distancias relativas de los puntos.
+        
+        \textit{El mapeo de Sammon}. Modifica la función de coste clásica del MDS para dar mayor importancia a las distancias muy pequeñas respecto a las grandes.
+        
+        MDS para la \textbf{fusión de características no lineales} es \textbf{opuesto} al de los AEs, ya que los AEs no tienen en cuenta las distancias entre pares de muestras (optimizan una medida global de aptitud). 
+        
+        En resumen, podemos combinarla función objetivo del AE que considere las distancias (MDS) entre pares de puntos.
+        
+        \textit{Isomap}. Método ampliado de MDS, encargado de encontrar las \textbf{coordenadas} que describan los \textbf{grados de libertad reales} de los datos. 
+        \textit{Locally Lineal Embedding} (LLE). Aprende a recoger los vecinos reconstruyendo linealmente cada punto a partir de sus vecinos para mantener la estructura local.
+        
+        Los \textbf{AEs} son capaces de \textbf{mapear nuevas instancias} de la superficie latente \textbf{después} de haber sido \textbf{entrenados}, mientras que los Isomap y LLE no están preparados.
+        
+        \textit{Laplacian Eigenmaps}. Construye un grafo de adyacencia (nodo por instancia, arista por conexión) donde se construye una matriz de pesos. Por último, obtiene los valores/vectores propios que son usados para calcular las coordenadas propias. Pero sabemos que los \textbf{AEs no} suelen tener en cuenta la \textbf{estructura local} de los datos (menos AEs contractivos y otros).
+        
+        \textit{Restricted Boltzman Machine} (RBM). Modelo gráfico no dirigido, definido por una distribución de probabilidad conjunta determinada por una función de energía. Los RBM son \textbf{alternativas a las AEs} para la \textbf{inicialización} codiciosa de los \textbf{pesos} en las RNAs. Pero los AEs son más adaptables a diferentes tareas que los RBM.
+    
+    \end{enumerate}
+    
+    \item \textbf{\textit{Aplicaciones en el aprendizaje de características y más allá}}.
+    \par
+    Los AEs ayudan a las siguientes tareas de la siguiente forma:
+    \begin{itemize}
+        \item \textbf{Clasifiación}. Reduce/Transforma los datos de entrenamiento para mejorar la optimización del resultado.
+        
+        \item\textbf{Compresión de datos}. Entrenan a tipos específicos de datos para aprender comprensiones eficientes.
+        
+        \item \textbf{Detección de patrones anormales}. Identifican las instancias discordantes mediante el análisis de las codificaciones generadas.
+        
+        \item \textbf{Hashing}. Conversión de los datos de entrada en un vector binario para su acceso eficiente.
+        
+        \item \textbf{Visualización}. Proyecciones gráficas de los datos en 2-3 dimensiones.
+        
+    \end{itemize}
+    
+    \item\textbf{\textit{Directtrices, software y ejemplos sobre el diseño de AEs}}.
+    \par
+    \begin{enumerate}
+    \vspace{5mm}
+        \item \textbf{\textit{Guidelines}}. 
+        \par
+        Cuando pensemos en construir un AE para un problema determinado, debemos pensar en las modificaciones de la \textbf{sección 3}, e incluso puede que elijamos combinaciones de ellos.
+        
+        En la siguiente imagen se muestra un resumen de los diferentes diseños de AEs.
+        
+        \vspace{5mm}
+        \begin{center}
+            \includegraphics[width = .8\textwidth]{imagenes/AE_disenios_p6.png}
+        \end{center}
+        \vspace{5mm}
+        
+        Las indicaciones básicas al diseño son las siguientes:
+        
+        \begin{itemize}
+            \item \textit{Arquitectura}. Si tenemos un AE que tiene una longitud de codificación proporcionalmente muy baja respecto al número de variables originales, debemos de considerar un \textbf{AE apilado profundo}. Si fuese al contrario, entonces optar por \textbf{capas totalmente conectadas} .
+            
+            \item \textit{Activaciones y función de pérdida}. Las funciones de activación van relacionadas con la función de pérdida que se vaya a optimizar. Si tenemos una función de activación \textbf{sigmoide} suele ser razonable para la capa de codificación, siendo la última capa la preferida debido a sus mayores gradientes. \textbf{No} hace falta que éste \textbf{coincida} con la activación en la capa de \textbf{salida}. Mientras que usar \textbf{activación lineal o ReLU} es coherente si usamos el error cuadrático medio como error de reconstrucción. Por último, una \textbf{activación logística} se combina con el error de entropía cruzada y datos normalizados (por producir valores entre 0 y 1).
+            
+            \item \textit{Regularizaciones}. Lo principal es añadir un \textbf{decaimiento del peso} para evitar que se sobreajuste a los datos de entrenamiento. Una \textbf{codificación dispersa} es más flexible en la elección de la estructura. Además, una regularización por \textbf{contracción} puede ser valiosa si los datos forman una variedad de baja dimensión.
+            
+        \end{itemize}
+        
+        \vspace{5mm}
+        \item \textbf{Softwares}.
+        \par
+        Entre los más comunes están: Tensorflow, Caffe, Torch, MXNet, Keras.
+        
+        El usuario debe definir el modelo capa por capa, colocando las activaciones donde se desee. Al indicar la función objetivo, serán las más habituales, pero al incluir las funciones de pérdida poco comunes (correntropía o regularizaciones como contracción) pueden necesitar ser implementadas adicionalmente.
+        
+        \vspace{5mm}
+        \item \textbf{Ejemplo de uso con Tensorflow y Keras}.
+        
+        \par
+        Se ha obtenido del repositorio de \hyperlink{https://github.com/fdavidcl/ae-review-resources}{fdavidcl} los scripts correspondientes al ejemplo de uso de autoencoders y PCA. 
+        
+        \begin{itemize}
+            \item \textit{autoencoder.py}. Uso de AE con una activación indicada para la capa de codificación. 
+            
+            \item \textit{utils.py}. Implementa \textbf{regularizaciones} y \textbf{modificaciones} para la posibilidad de definir AEs básicos, dispersos, contractivos, de eliminación de ruido y robustos.
+            
+            \newpage
+            \item \textit{mnist.py}. \textbf{Ejecutable} encargado de entrenar los AEs con los datos de MNIST y plasma una representación gráfica de la codificación y reconstrucción de algunas instancias de prueba.
+            
+            \item \textit{cancer.py}. \textbf{Ejecutable} que tiene como condición la necesidad del dataset de \textbf{WDBC} para su posible entrenamiento de un AE.
+            
+        \end{itemize}
+        
+        Debemos tener en cuenta que si queremos modificar el modelo de AE aprendido en uno de estos scripts, tendremos que modificar los parámetros que aparecen en la construcción del autoencoder.
+        
+        
+    \end{enumerate}
     
     
 \end{enumerate}
+
+\newpage
+\section{Análisis sobre el uso de autocodificadores para el aprendizaje de representaciones: Fundamentos, estudios de casos de tareas de aprendizaje, explicabilidad y desafíos.}
+
+\begin{enumerate}
+    \item \textbf{\textit{Introducción.}}
+    \par
+    Con las RNA profundas, el aprendizaje de representación se introdujo en los predictores; es decir, aprendizaje basado en optimizar iterativamente modificando los pesos en las capas de neuronas. Como las RNA pueden estructurarse conforme al problema, nos sirven también como aprendices de características independientes como los \textbf{Autoenconders} (arquitecturas neuronales que buscan la mejor representación de los datos según su función de pérdida indicada).
+    
+    En este trabajo se analizará una serie de resoluciones con una amplia variedad de autoencoders enfocados a diferentes aspectos. En mi caso, me centraré en el último caso, \textbf{la generación de instancias} que no pertenencen al conjunto de entrenamiento. 
+    
+    \vspace{5mm}
+    \item\textbf{\textit{Generación de instancias.}}
+    
+    La representación aprendida por un AE puede ser útil para codificar o reconstruir instancias individuales a partir de un conjunto de entrenamiento. Hay que tener en cuenta que debe de tratar de realizar algún tipo de \textbf{aprendizaje múltiple}; mapeando el espacio de características en un espacio más pequeño dando sentido a trabajar con todo el espacio de codificación. A partir de este nuevo espacio reducido, se permite \textbf{predecir} una \textbf{reconstrucción} para codificaciones que \textbf{no} provienen de una \textbf{instancia} en el espacio de características original.
+    
+    Por ejemplo, generar nuevas imágenes de rostros similares a los de un conjunto de entrenamiento, pero \textbf{no idénticos} a ninguno de ellos. Hay que tener \textbf{cuidado} con la \textbf{interpolación}, ya que crearía muchas imágenes que no representan rostros. 
+    
+    Las variantes de AEs que pueden cumplir este propósito son: \textbf{AEs variacionales}, \textbf{adversariales} y \textbf{AEs contractivos}.
+    
+    \newpage
+    
+    \begin{itemize}
+        \vspace{5mm}
+        \item \textbf{AEs contractivos}. Se basa en el mapeo de las instancias a \textbf{codificaciones de los vecinos} más cercanos mediante una \textbf{regularización}. Por lo tanto, ayuda al AE a realizar transformaciones que encuentran colectores en los datos, ya que se preserva la estructura local. El colector puede entonces ser atravesado para que el decodificador genere nuevas instancias. 
+        
+        \vspace{5mm}
+        \item \textbf{AEs variacionales y adversiales}. Crean una distribución a priori en las codificaciones de diferentes maneras, muestrean \textbf{nuevas instancias} tomando \textbf{puntos} de este \textbf{espacio} y proyectándolos \textbf{sobre el espacio de características original} en la \textbf{reconstrucción}. Los \textbf{variacionales} son \textbf{estacásticos}; es decir, para cada instancia no existe un único punto en el espacio de incrustación, sino que se les asigna una distribución (distribución normal, comúnmente usada mediante su media y desviación estandar).
+        
+        Se muestra a continuación un ejemplo de reconstrucción mediante el muestreo de esa distribución y la propagación de los resultados a través de la red de decodificadores.
+        
+        \vspace{5mm}
+        \begin{center}
+            \includegraphics[width = .6\textwidth]{imagenes/Ejemplos_AE_generativos_caras.png}
+        \end{center}
+        \vspace{5mm}
+        
+        \newpage
+        En este ejemplo, se está usando un \textbf{AE variacional} basado en la estructura representada en la siguiente imagen, donde se generan rostros humanos que no pertenecen a ninguna persona, ya que no estarán presentes en el conjunto de datos de entrenamiento.
+        
+        \vspace{5mm}
+        \begin{center}
+            \includegraphics[width = .6\textwidth]{imagenes/AE_Variacional_Estructura_1.png}
+        \end{center}
+        \vspace{5mm}
+    \end{itemize}
+\end{enumerate}
+
+\newpage
+
+
+\section{Modelos Generativos Profundos.}
+
+
 
 
